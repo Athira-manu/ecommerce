@@ -1,0 +1,71 @@
+{% load static %}
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark" xmlns="http://www.w3.org/1999/html">
+<!--  <a class="navbar-brand" href="#">Navbar</a>-->
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      <img src="{% static 'img/new.png' %}"  style="width:50px;" alt='this is cart logo'>
+      <li class="nav-item active">
+        <a class="nav-link" href="{% url 'mycart:allProdCat' %}">Home <span class="sr-only">(current)</span></a>
+      </li>
+
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Categories
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <a class="dropdown-item" href="{% url 'mycart:allProdCat' %}">All Products</a>
+            {% for cat in links %}
+          <a class="dropdown-item" href="{{cat.get_url}}">{{cat.name}}</a>
+            {% endfor %}
+<!--          <div class="dropdown-divider"></div>-->
+<!--          <a class="dropdown-item" href="#">Something else here</a>-->
+        </div>
+      </li>
+
+      <form class="form-inline my-2 my-lg-0" action="{% url 'search_app:SearchResult' %}" method="get">
+      {% csrf_token %}
+      <input class="form-control mr-sm-2" type="search" placeholder="Search your favourites" aria-label="Search" name="q">
+      <button class="btn btn-outline-success my-2 my-sm-0" type="submit"><i class="fas fa-search"></i></button>
+    </form>
+
+<!--      <li class="nav-item">-->
+<!--        <a class="nav-link disabled" href="#">Disabled</a>-->
+<!--      </li>-->
+    </ul>
+
+      {% if item_count > 0 %}
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'cart:cart_detail' %}"><i class="fas fa-shopping-cart">{{item_count}}</i></a>
+      </li>
+      {% endif %}
+
+      {% if user.is_authenticated %}
+    <li class="nav-item active"><a class="nav-link" href=""><i class="fas fa-user"></i><strong>"Hai {{user.first_name}}</strong></i><span class="sr-only">(current)</span></a></li>
+      <li class="nav-item active">
+        <a class="nav-link" href="{% url 'mycart:logout' %}"><strong>Logout </strong><span class="sr-only">(current)</span></a>
+      </li>
+      {% else %}
+      <li class="nav-item active">
+        <a class="nav-link" href="{% url 'mycart:login' %}"><strong>Login</strong> <span class="sr-only">(current)</span></a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'mycart:register' %}"><strong>Register </strong><span class="sr-only">(current)</span></a>
+      </li>
+      {% endif %}
+
+
+  </div>
+</nav>
+<!--<nav>-->
+<!--   <dl>-->
+<!--        <dt><a href="{% url 'mycart:allProdCat' %}">All Products</a></dt>-->
+<!--        {% for cat in links %}-->
+<!--        <dd><a href="{{cat.get_url}}">{{cat.name}}</a></dd>-->
+<!--        {% endfor %}-->
+<!--        <dt>your cart</dt>-->
+<!--   </dl>-->
+<!--</nav><br>-->
